@@ -1,33 +1,67 @@
 {
   "name": "rafflebox_assignment",
   "version": "1.0.0",
+  "private": true,
   "description": "Assignment for rafflebox",
-  "main": "index.ts",
-  "scripts": {
-    "build": "tsc --project ./",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc",
-    "start": "nodemon index.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kylemacd/rafflebox_assignment.git"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
+  "scripts": {
+    "serve": "vue-cli-service serve --port 3000",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "start": "nodemon index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "main": "index.ts",
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "vue": "^2.6.11"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.7",
+    "@types/node": "^14.0.27",
+    "@vue/cli-plugin-babel": "~4.4.0",
+    "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-service": "~4.4.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "_id": "rafflebox_assignment@1.0.0",
   "bugs": {
     "url": "https://github.com/kylemacd/rafflebox_assignment/issues"
   },
   "homepage": "https://github.com/kylemacd/rafflebox_assignment#readme",
-  "devDependencies": {
-    "@types/express": "^4.17.7",
-    "@types/node": "^14.0.27",
-    "nodemon": "^2.0.4",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
+  "keywords": [],
+  "license": "ISC",
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kylemacd/rafflebox_assignment.git"
   }
 }
