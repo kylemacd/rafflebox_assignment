@@ -1,19 +1,24 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+import { time } from 'console'
 
 const weatherSchema = new mongoose.Schema(
   {
     location: {
       type: String,
-      required: true,
+      required: true
     },
     temperature: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true
+    },
+    time: {
+      type: time,
+      require: true
     }
   },
   { timestamps: true }
-);
- 
-const Weather = mongoose.model('Weather', weatherSchema);
- 
-export default Weather;
+)
+
+const Weather = mongoose.model('Weather', weatherSchema)
+
+export default Weather
