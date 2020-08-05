@@ -5,14 +5,14 @@
         <div class="">
           <form
             id="addWeather"
-            @submit.prevent="validateForm"
+            @submit="validateForm"
           >
             <div class="col-4">
               <div class="form-group">
                 <label for="location">Location <span>*</span></label>
                 <input
                   id="location"
-                  v-model="location"
+                  v-model="data.location"
                   type="text"
                   class="form-control required"
                   placeholder="Enter a location"
@@ -24,7 +24,7 @@
                 <label for="temperature">Temperature <span>*</span></label>
                 <input
                   id="temperature"
-                  v-model="temperature"
+                  v-model="data.temperature"
                   type="text"
                   class="form-control required"
                   placeholder="Enter a temperature"
@@ -36,7 +36,7 @@
                 <label for="time">Time <span>*</span></label>
                 <input
                   id="time"
-                  v-model="time"
+                  v-model="data.time"
                   type="text"
                   class="form-control required"
                   placeholder="Enter a time"
@@ -59,17 +59,20 @@
 <script lang="ts">
 import api from '../services/api'
 export default {
-  name: 'WeatherForm',
+  name: 'WeatherAdd',
   data () {
     return {
       errors: [],
-      location: '',
-      temperature: '',
-      time: ''
+      data: {
+        location: '',
+        temperature: '',
+        time: ''
+      }
     }
   },
   methods: {
-    validateForm () {
+    validateForm (e) {
+      e.preventDefault()
       this.errors = []
       const requiredFields = this.$el.querySelectorAll('.required')
       const errors = this.errors
@@ -82,16 +85,15 @@ export default {
         }
       })
       if (!errors.length) {
-        console.log(this.props)
-        api.post('/weather', {
-          firstName: 'Fred',
-          lastName: 'Flintstone'
-        }).then(function (response) {
-          console.log(response)
-        }).catch(function (error) {
-          console.log(error)
-        })
+        this.addWeather()
       }
+    },
+    addWeather () {
+      api.post('/weather',
+        this.data
+      )
+        .then(res => (this.$root.$emit('add-weather', res.data)))
+        .catch(err => console.log(err))
     }
   }
 }

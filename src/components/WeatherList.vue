@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <table>
+    <table class="table">
       <th>Location</th>
       <th>Temperature</th>
       <th>Time</th>
@@ -18,12 +18,23 @@
 
 <script lang="ts">
 import api from '../services/api'
+
 export default {
   name: 'WeatherList',
   data () {
     return {
-      weathers: api.get('/weather')
+      weathers: []
     }
+  },
+  created () {
+    api
+      .get('/weather')
+      .then(response => (this.weathers = response.data))
+  },
+  mounted () {
+    this.$root.$on('add-weather', newWeather => {
+      this.weathers = [newWeather, ...this.weathers]
+    })
   }
 }
 </script>

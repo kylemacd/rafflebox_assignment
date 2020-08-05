@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <WeatherForm />
+    <WeatherAdd />
     <WeatherList />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import WeatherForm from './components/WeatherForm.vue'
+import WeatherAdd from './components/WeatherAdd.vue'
 import WeatherList from './components/WeatherList.vue'
 
 export default Vue.extend({
   name: 'App',
   components: {
-    WeatherForm,
+    WeatherAdd,
     WeatherList
   }
 })
