@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cors from 'cors'
 
 const app = express();
 const PORT = 8000;
@@ -19,6 +20,11 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
+
+app.get('/', (req, res) => res.send('Hi there'));
 app.get('/api', (req, res) => res.send('Express + TypeScript Server'));
 app.use('/api/weather', weatherRoutes)
 

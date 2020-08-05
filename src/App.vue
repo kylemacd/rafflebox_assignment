@@ -1,28 +1,20 @@
 <template>
   <div id="app">
     <WeatherForm />
+    <WeatherList />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import Vue from 'vue'
 import WeatherForm from './components/WeatherForm.vue'
+import WeatherList from './components/WeatherList.vue'
 
-@Component({
+export default Vue.extend({
+  name: 'App',
   components: {
-    WeatherForm
+    WeatherForm,
+    WeatherList
   }
 })
-export default class App extends Vue {}
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
