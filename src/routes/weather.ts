@@ -18,11 +18,11 @@ routes.get('/:weatherId', (req, res) => {
 })
 
 routes.post('/', (req, res) => {
-  const newWeather = new Weather(req.body.weather)
+  const newWeather = new Weather(req.body)
   newWeather.save(function (err, obj) {
     if (err) { res.send(err) }
-
-    res.json({ message: 'weather created!', data: obj })
+    console.log(err)
+    res.send(obj)
   })
 })
 
