@@ -7,7 +7,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
-Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App)

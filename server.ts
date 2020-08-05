@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors'
 
 const app = express();
+app.use(cors());
+app.options('*', cors());
 const PORT = 8000;
 const weatherRoutes = require('./src/routes/weather');
 
@@ -19,10 +21,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-
-app.use(cors({
-  origin: 'http://localhost:3000'
-}))
 
 app.get('/', (req, res) => res.send('Hi there'));
 app.get('/api', (req, res) => res.send('Express + TypeScript Server'));
