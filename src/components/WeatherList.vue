@@ -16,6 +16,9 @@
         <td>{{ humanizeTime(weather.time) }}</td>
         <td><WeatherDelete :id="weather._id" /></td>
       </tr>
+      <tr id="emptyRow" v-show="displayedWeathers.length === 0">
+        <td colspan="4" align="center">Press the add button to enter your first location.</td>
+      </tr>
     </table>
   </div>
 </template>
@@ -93,14 +96,6 @@ export default {
 
   table th:last-child{
     border-radius:0 10px 0 0;
-  }
-
-  table tr:last-child td:first-child {
-    border-radius: 0 0 0 10px;
-  }
-
-  table tr:last-child td:last-child {
-    border-radius: 0 0 10px 0;
   }
 
   .table th { border-top: none; }
