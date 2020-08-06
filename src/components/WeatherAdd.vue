@@ -51,6 +51,7 @@
                   v-model="data.time"
                   class="form-control"
                   placeholder="Enter a time"
+                  now-button
                   :class="{ 'alert-danger': this.errors.find(e => e.type === 'time') }"
                 />
               </div>

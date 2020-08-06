@@ -6,7 +6,7 @@
       <th>Time</th>
       <th />
       <tr
-        v-for="weather in weathers"
+        v-for="weather in displayedWeathers"
         :key="weather._id"
       >
         <td>{{ weather.location }}</td>
@@ -31,17 +31,25 @@ export default {
   },
   data () {
     return {
-      weathers: []
+      weathers: [],
+      displayedWeathers: []
     }
   },
   created () {
     api
       .get('/weather')
-      .then(response => (this.weathers = this.getUniqueValues(response.data.sort((a, b) => a.createdAt - b.createdAt), 'location')))
+      .then(response => {
+        this.weathers = response.data
+      })
+  },
+  watch: {
+    weathers: function () {
+      this.updateDisplayList()
+    }
   },
   mounted () {
     this.$root.$on('add-weather', newWeather => {
-      this.weathers = this.getUniqueValues([newWeather, ...this.weathers])
+      this.weathers = [newWeather, ...this.weathers]
     })
     this.$root.$on('remove-weather', id => {
       this.weathers.splice(this.weathers.findIndex(function (i) {
@@ -52,6 +60,9 @@ export default {
   methods: {
     humanizeTime (date) {
       return moment(date).format('hh:mm A')
+    },
+    updateDisplayList () {
+      this.displayedWeathers = this.getUniqueValues(this.weathers)
     },
     getUniqueValues (arr) {
       const grouped = lodash.groupBy(arr, function (value) {

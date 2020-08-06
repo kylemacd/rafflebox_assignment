@@ -27,13 +27,6 @@ routes.post('/', (req, res) => {
   })
 })
 
-routes.patch('/:weatherId', (req, res) => {
-  const weather = Weather.updateOne({ _id: req.params.weatherId }, req.body.weather, { upsert: true }, function (err, obj) {
-    if (err) { res.status(404).send(err) }
-    res.send(obj)
-  })
-})
-
 routes.delete('/:weatherId', (req, res) => {
   const weather = Weather.deleteOne({ _id: req.params.weatherId }, function (err) {
     if (err) { res.status(404).send('Record not found') }
