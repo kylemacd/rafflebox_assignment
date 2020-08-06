@@ -1,9 +1,9 @@
 <template>
   <div class="list">
-    <table class="table">
-      <th>Location</th>
-      <th>Temperature</th>
-      <th>Time</th>
+    <table class="table table-hover">
+      <th>Location <i class="fas fa-search-location" /></th>
+      <th>Temperature <i class="fas fa-temperature-low" /></th>
+      <th>Time <i class="fas fa-clock" /></th>
       <th />
       <tr
         v-for="weather in displayedWeathers"
@@ -35,17 +35,17 @@ export default {
       displayedWeathers: []
     }
   },
+  watch: {
+    weathers: function () {
+      this.updateDisplayList()
+    }
+  },
   created () {
     api
       .get('/weather')
       .then(response => {
         this.weathers = response.data
       })
-  },
-  watch: {
-    weathers: function () {
-      this.updateDisplayList()
-    }
   },
   mounted () {
     this.$root.$on('add-weather', newWeather => {
@@ -79,6 +79,9 @@ export default {
 </script>
 
 <style scoped>
+  th {
+    background: #c7efca;
+  }
   tr:nth-child(even) {
     background: #e9f8fb;
   }

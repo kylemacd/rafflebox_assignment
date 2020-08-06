@@ -1,71 +1,73 @@
 <template>
-  <div class="row">
-    <div class="col">
-      <fieldset>
-        <div class="">
-          <div v-show="this.errors.length != 0">
-            <ul>
-              <li
-                v-for="error in this.errors"
-                :key="error.type"
-              >
-                {{ error.type }} <span v-show="error.message.length != 0">- {{ error.message }}</span>
-              </li>
-            </ul>
-          </div>
-          <form
-            id="addWeather"
-            @submit="validateForm"
-          >
-            <div class="col-4">
-              <div class="form-group">
-                <label for="location">Location <span>*</span></label>
-                <input
-                  id="location"
-                  v-model="data.location"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter a location"
-                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'location' ) }"
+  <div class="addForm">
+    <b-button id="addButton" v-b-modal.addModal variant="success shadow float-right"><i class="fas fa-plus"></i> Add</b-button>
+    <b-modal id="addModal" title="Add a Location"
+      ok-title="Save"
+      @ok="handleOk"
+      @show="resetWeatherData"
+      @hidden="resetWeatherData"
+    >
+      <div class="row">
+        <div class="col">
+          <div class="">
+            <div v-show="this.errors.length != 0">
+              <ul>
+                <li
+                  v-for="error in this.errors"
+                  :key="error.type"
                 >
-              </div>
+                  {{ error.type }} <span v-show="error.message.length != 0">- {{ error.message }}</span>
+                </li>
+              </ul>
             </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="temperature">Temperature <span>*</span></label>
-                <input
-                  id="temperature"
-                  v-model="data.temperature"
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter a temperature"
-                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'temperature') }"
-                >
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="form-group">
-                <label for="time">Time <span>*</span></label>
-                <b-form-timepicker
-                  id="time"
-                  v-model="data.time"
-                  class="form-control"
-                  placeholder="Enter a time"
-                  now-button
-                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'time') }"
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              class="btn btn-primary"
+            <form
+              id="addWeather"
+              @submit.stop.prevent="validateForm"
             >
-              Submit
-            </button>
-          </form>
+              <div class="col">
+                <div class="form-group">
+                  <label for="location">Location <span>*</span></label>
+                  <input
+                    id="location"
+                    v-model="data.location"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter a location"
+                    :class="{ 'alert-danger': this.errors.find(e => e.type === 'location' ) }"
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="temperature">Temperature <span>*</span></label>
+                  <input
+                    id="temperature"
+                    v-model="data.temperature"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter a temperature"
+                    :class="{ 'alert-danger': this.errors.find(e => e.type === 'temperature') }"
+                  >
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="time">Time <span>*</span></label>
+                  <b-form-timepicker
+                    id="time"
+                    v-model="data.time"
+                    class="form-control"
+                    placeholder="Enter a time"
+                    now-button
+                    :class="{ 'alert-danger': this.errors.find(e => e.type === 'time') }"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-      </fieldset>
-    </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -76,11 +78,23 @@ import moment from 'moment'
 export default {
   name: 'WeatherAdd',
   data () {
-    return this.getDefaultData()
+    return {
+      errors: [],
+      data: {
+        location: '',
+        temperature: '',
+        time: ''
+      }
+    }
   },
   methods: {
-    validateForm (e) {
-      e.preventDefault()
+    handleOk (bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.validateForm()
+    },
+    validateForm () {
       this.errors = []
 
       this.validateLocation()
@@ -110,18 +124,13 @@ export default {
         this.errors.push({ type: 'time', message: 'Invalid time' })
       }
     },
-    getDefaultData () {
-      return {
-        errors: [],
-        data: {
-          location: '',
-          temperature: '',
-          time: ''
-        }
-      }
-    },
     resetWeatherData () {
-      this.data = this.getDefaultData()
+      this.errors = []
+      this.data = {
+        location: '',
+        temperature: '',
+        time: ''
+      }
     },
     handleError (type, errs) {
       if (type === 'validation') {
@@ -138,21 +147,24 @@ export default {
         this.data
       )
         .then(res => {
-          if (res.data.errors.length === 0) {
+          if (typeof res.data.errors === 'undefined') {
             this.$root.$emit('add-weather', res.data)
+            this.$root.$emit('bv::hide::modal', 'addModal')
           } else {
             this.handleError('validation', res.data.errors)
           }
         })
-        .catch(err => this.handleError(err))
+        .catch(err => {
+          this.handleError(err)
+        })
       this.resetWeatherData()
     }
   }
 }
 </script>
 
-<style>
-  label span {
-    color: red;
+<style scoped>
+  #addButton {
+    margin-bottom: 10px;
   }
 </style>

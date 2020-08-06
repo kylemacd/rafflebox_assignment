@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <button
-      class="btn btn-danger"
+      class="btn btn-danger float-right"
       @click="deleteWeather"
     >
       Delete
