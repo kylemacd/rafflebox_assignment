@@ -12,7 +12,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <div class="floatingBox shadow">
+          <div class="floatingBox">
             <WeatherList />
           </div>
         </div>
@@ -56,16 +56,18 @@ export default Vue.extend({
     justify-content: center; /*centers items on the line (the x-axis by default)*/
     align-items: center; /*centers items on the cross-axis (y by default)*/
   }
-  .floatContainer {
-    width: 1000px;
+
+  @media (min-width:1025px) {
+    .floatingBox {
+      width: 1000px;
+    }
   }
   .floatingBox {
     display: inline-flexbox;
     background: #fff;
     border-radius: 10px;
-    padding: 15px;
   }
-  .shadow {
+  .dropShadow {
     box-shadow: 5px 10px 18px #888888;
   }
 </style>

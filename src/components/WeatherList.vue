@@ -1,10 +1,12 @@
 <template>
   <div class="list">
-    <table class="table table-hover">
-      <th>Location <i class="fas fa-search-location" /></th>
-      <th>Temperature <i class="fas fa-temperature-low" /></th>
-      <th>Time <i class="fas fa-clock" /></th>
-      <th />
+    <table class="table table-hover dropShadow">
+      <thead>
+        <th>Location <i class="fas fa-search-location" /></th>
+        <th>Temperature <i class="fas fa-temperature-low" /></th>
+        <th>Time <i class="fas fa-clock" /></th>
+        <th />
+      </thead>
       <tr
         v-for="weather in displayedWeathers"
         :key="weather._id"
@@ -85,4 +87,21 @@ export default {
   tr:nth-child(even) {
     background: #e9f8fb;
   }
+  table th:first-child{
+    border-radius:10px 0 0 0;
+  }
+
+  table th:last-child{
+    border-radius:0 10px 0 0;
+  }
+
+  table tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+  }
+
+  table tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+  }
+
+  .table th { border-top: none; }
 </style>

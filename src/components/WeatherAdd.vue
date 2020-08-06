@@ -1,7 +1,15 @@
 <template>
   <div class="addForm">
-    <b-button id="addButton" v-b-modal.addModal variant="success shadow float-right"><i class="fas fa-plus"></i> Add</b-button>
-    <b-modal id="addModal" title="Add a Location"
+    <b-button
+      id="addButton"
+      v-b-modal.addModal
+      variant="success dropShadow float-right"
+    >
+      <i class="fas fa-plus" /> Add
+    </b-button>
+    <b-modal
+      id="addModal"
+      title="Add a Location"
       ok-title="Save"
       @ok="handleOk"
       @show="resetWeatherData"
