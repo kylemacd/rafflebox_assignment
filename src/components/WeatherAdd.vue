@@ -143,9 +143,9 @@ export default {
     handleError (type, errs) {
       if (type === 'validation') {
         const regex = /Path `.*`/
-        for (const [key, err] of Object.entries(errs)) {
-          this.errors.push({ type: key, message: err.properties.message.replace(regex, '') })
-        }
+        errs.forEach((key, error) => {
+          this.errors.push({ type: key, message: error.properties.message.replace(regex, '') })
+        })
       } else {
         this.errors.push({ type: 'unknown', message: '' })
       }
