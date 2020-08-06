@@ -3,6 +3,16 @@
     <div class="col">
       <fieldset>
         <div class="">
+          <div v-show="this.errors.length != 0">
+            <ul>
+              <li
+                v-for="error in this.errors"
+                :key="error.type"
+              >
+                {{ error.type }} - {{ error.message }}
+              </li>
+            </ul>
+          </div>
           <form
             id="addWeather"
             @submit="validateForm"
@@ -14,8 +24,9 @@
                   id="location"
                   v-model="data.location"
                   type="text"
-                  class="form-control required"
+                  class="form-control"
                   placeholder="Enter a location"
+                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'location' ) }"
                 >
               </div>
             </div>
@@ -26,21 +37,22 @@
                   id="temperature"
                   v-model="data.temperature"
                   type="text"
-                  class="form-control required"
+                  class="form-control"
                   placeholder="Enter a temperature"
+                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'temperature') }"
                 >
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="time">Time <span>*</span></label>
-                <input
+                <b-form-timepicker
                   id="time"
                   v-model="data.time"
-                  type="text"
-                  class="form-control required"
+                  class="form-control"
                   placeholder="Enter a time"
-                >
+                  :class="{ 'alert-danger': this.errors.find(e => e.type === 'time') }"
+                />
               </div>
             </div>
             <button
@@ -58,35 +70,57 @@
 
 <script lang="ts">
 import api from '../services/api'
+import moment from 'moment'
+
 export default {
   name: 'WeatherAdd',
   data () {
-    return {
-      errors: [],
-      data: {
-        location: '',
-        temperature: '',
-        time: ''
-      }
-    }
+    return this.getDefaultData()
   },
   methods: {
     validateForm (e) {
       e.preventDefault()
       this.errors = []
-      const requiredFields = this.$el.querySelectorAll('.required')
-      const errors = this.errors
-      requiredFields.forEach(function (field) {
-        if (field.value === '') {
-          errors.push([field.id + 'is required'])
-          field.classList.add('alert-danger')
-        } else {
-          field.classList.remove('alert-danger')
-        }
-      })
-      if (!errors.length) {
+
+      this.validateLocation()
+      this.validateTemperature()
+      this.validateTime()
+      console.log(this.errors)
+      if (!this.errors.length) {
         this.addWeather()
       }
+    },
+    validateLocation () {
+      if (this.data.location.length === 0) {
+        this.errors.push({ type: 'location', message: 'This field is required' })
+      }
+    },
+    validateTemperature () {
+      if (this.data.temperature.length === 0) {
+        this.errors.push({ type: 'temperature', message: 'This field is required' })
+      } else if (isNaN(this.data.temperature)) {
+        this.errors.push({ type: 'temperature', message: 'This field must be a number' })
+      }
+    },
+    validateTime () {
+      if (this.data.time.length === 0) {
+        this.errors.push({ type: 'time', message: 'This field is required' })
+      } else if (!moment(this.data.time, 'LT').isValid()) {
+        this.errors.push({ type: 'time', message: 'Invalid time' })
+      }
+    },
+    getDefaultData () {
+      return {
+        errors: [],
+        data: {
+          location: '',
+          temperature: '',
+          time: ''
+        }
+      }
+    },
+    resetWeatherData () {
+      this.data = this.getDefaultData()
     },
     addWeather () {
       api.post('/weather',
@@ -94,6 +128,7 @@ export default {
       )
         .then(res => (this.$root.$emit('add-weather', res.data)))
         .catch(err => console.log(err))
+      this.resetWeatherData()
     }
   }
 }

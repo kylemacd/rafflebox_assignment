@@ -14,6 +14,8 @@
   },
   "main": "index.ts",
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/vue-fontawesome": "^0.1.10",
     "@types/cors": "^2.8.7",
     "@types/mongoose": "^5.7.34",
     "@vue/eslint-config-standard": "^5.1.2",
@@ -23,9 +25,13 @@
     "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.27",
     "vue": "^2.6.11",
+    "vue-bootstrap-datetimepicker": "^5.0.1",
     "vue-class-component": "^7.2.3",
+    "vue-lodash": "^2.1.2",
     "vue-property-decorator": "^8.4.2"
   },
   "devDependencies": {
@@ -52,6 +58,7 @@
     "prettier": "^1.19.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7",
+    "vue-bootstrap-time-picker": "^1.0.3",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

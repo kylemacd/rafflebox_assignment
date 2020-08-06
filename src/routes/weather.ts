@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Weather from '../models/weather'
+import moment from 'moment'
 
 const routes = require('express').Router({ mergeParams: true })
 
@@ -18,17 +19,17 @@ routes.get('/:weatherId', (req, res) => {
 })
 
 routes.post('/', (req, res) => {
+  req.body.time = moment(moment().format('YYYY-MM-DD') + ' ' + req.body.time)
   const newWeather = new Weather(req.body)
   newWeather.save(function (err, obj) {
     if (err) { res.send(err) }
-    console.log(err)
     res.send(obj)
   })
 })
 
 routes.patch('/:weatherId', (req, res) => {
   const weather = Weather.updateOne({ _id: req.params.weatherId }, req.body.weather, { upsert: true }, function (err, obj) {
-    if (err) { res.status(404).send('Record not found') }
+    if (err) { res.status(404).send(err) }
     res.send(obj)
   })
 })
