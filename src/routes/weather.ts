@@ -19,7 +19,9 @@ routes.get('/:weatherId', (req, res) => {
 })
 
 routes.post('/', (req, res) => {
-  req.body.time = moment(moment().format('YYYY-MM-DD') + ' ' + req.body.time)
+  if ( req.body.time ) {
+    req.body.time = moment(moment().format('YYYY-MM-DD') + ' ' + req.body.time)
+  }
   const newWeather = new Weather(req.body)
   newWeather.save(function (err, obj) {
     if (err) { res.send(err) }

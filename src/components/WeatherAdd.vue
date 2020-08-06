@@ -9,7 +9,7 @@
                 v-for="error in this.errors"
                 :key="error.type"
               >
-                {{ error.type }} - {{ error.message }}
+                {{ error.type }} <span v-show="error.message.length != 0">- {{ error.message }}</span>
               </li>
             </ul>
           </div>
@@ -86,26 +86,26 @@ export default {
       this.validateLocation()
       this.validateTemperature()
       this.validateTime()
-      console.log(this.errors)
+
       if (!this.errors.length) {
         this.addWeather()
       }
     },
     validateLocation () {
       if (this.data.location.length === 0) {
-        this.errors.push({ type: 'location', message: 'This field is required' })
+        this.errors.push({ type: 'location', message: 'is required' })
       }
     },
     validateTemperature () {
       if (this.data.temperature.length === 0) {
-        this.errors.push({ type: 'temperature', message: 'This field is required' })
+        this.errors.push({ type: 'temperature', message: 'is required' })
       } else if (isNaN(this.data.temperature)) {
-        this.errors.push({ type: 'temperature', message: 'This field must be a number' })
+        this.errors.push({ type: 'temperature', message: 'must be a number' })
       }
     },
     validateTime () {
       if (this.data.time.length === 0) {
-        this.errors.push({ type: 'time', message: 'This field is required' })
+        this.errors.push({ type: 'time', message: 'is required' })
       } else if (!moment(this.data.time, 'LT').isValid()) {
         this.errors.push({ type: 'time', message: 'Invalid time' })
       }
@@ -123,12 +123,28 @@ export default {
     resetWeatherData () {
       this.data = this.getDefaultData()
     },
+    handleError (type, errs) {
+      if (type === 'validation') {
+        const regex = /Path `.*`/
+        for (const [key, err] of Object.entries(errs)) {
+          this.errors.push({ type: key, message: err.properties.message.replace(regex, '') })
+        }
+      } else {
+        this.errors.push({ type: 'unknown', message: '' })
+      }
+    },
     addWeather () {
       api.post('/weather',
         this.data
       )
-        .then(res => (this.$root.$emit('add-weather', res.data)))
-        .catch(err => console.log(err))
+        .then(res => {
+          if (res.data.errors.length === 0) {
+            this.$root.$emit('add-weather', res.data)
+          } else {
+            this.handleError('validation', res.data.errors)
+          }
+        })
+        .catch(err => this.handleError(err))
       this.resetWeatherData()
     }
   }
